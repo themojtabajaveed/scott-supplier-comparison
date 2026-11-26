@@ -1,0 +1,79 @@
+{
+  "state": "bounded_result_review_required",
+  "demo_fixture_only": true,
+  "network_used": false,
+  "gaps": [],
+  "trace": [
+    {
+      "step": 1,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 2,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 3,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 4,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 5,
+      "tool": "variant_data",
+      "why": "One approved own-site public variant endpoint"
+    },
+    {
+      "step": 6,
+      "tool": "evidence_link",
+      "why": "Choose same-source missing-field evidence, not page instructions"
+    },
+    {
+      "step": 7,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 8,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 9,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 10,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 11,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "wessex_mill",
+      "stop_reason": "page_budget"
+    }
+  ]
+}

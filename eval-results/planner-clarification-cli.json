@@ -1,0 +1,11 @@
+{
+  "state": "needs_clarification",
+  "demo_fixture_only": true,
+  "network_used": false,
+  "gaps": [
+    "Supported pack is explicit 16kg; supplied pack is preserved above",
+    "Specify strong white bread flour or wholemeal bread flour",
+    "Source not recognized; supplied source remains in original question"
+  ],
+  "trace": []
+}
