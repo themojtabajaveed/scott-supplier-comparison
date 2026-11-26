@@ -18,7 +18,7 @@ orders, with no live prices and no form for arbitrary orders.
 Every screen shows invented mills on reserved `.example` addresses, under the banner "Synthetic: invented mills, not
 supplier facts".
 
-**Video:** [docs/video/scott-m1-walkthrough.mp4](docs/video/scott-m1-walkthrough.mp4) is a 106-second guided
+**Video:** [Download the walkthrough (mp4, 3.2 MB)](https://raw.githubusercontent.com/themojtabajaveed/scott-supplier-comparison/main/docs/video/scott-m1-walkthrough.mp4), file `docs/video/scott-m1-walkthrough.mp4`. GitHub does not play it inline. It is a 106-second guided
 walkthrough (1280×830, no audio) of the demo page.
 - Each scenario opens on the top of the page, with the heading and the active scenario chip, then scrolls down to the
   claim, the cards and, for S1, the opened evidence.
