@@ -1,0 +1,372 @@
+{
+  "state": "bounded_result_review_required",
+  "question": "Compare Demo Mill Three (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+  "plan": {
+    "question": "Compare Demo Mill Three (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+    "domain": "supplier",
+    "state": "ready",
+    "gaps": [],
+    "entities": {
+      "pack": "16kg",
+      "product": "strong white bread flour"
+    },
+    "workflow": {
+      "name": "supplier",
+      "question": "Compare Demo Mill Three (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+      "fields": {
+        "product_price": "Price of the matched 16kg strong white bread flour sack, with currency.",
+        "delivery_charge": "Standard delivery charge for an order of one sack, with currency.",
+        "free_delivery_threshold": "Order value above which standard delivery is free, if stated.",
+        "delivery_time": "Stated dispatch or delivery time.",
+        "delivery_geography": "Where the seller delivers (countries/regions), as stated."
+      },
+      "required": [
+        "product_price",
+        "delivery_charge"
+      ],
+      "research_fields": [
+        "product_price",
+        "delivery_charge",
+        "free_delivery_threshold",
+        "delivery_time",
+        "delivery_geography"
+      ],
+      "sites": [
+        {
+          "name": "demo_mill_three",
+          "url": "https://demo-mill-three.example/products/demo-canadian-flour",
+          "delivery_page": "https://demo-mill-three.example/pages/delivery",
+          "offer_binding": {
+            "product_path": "/products/demo-canadian-flour",
+            "sku": "DM3-16",
+            "pack": "16kg",
+            "required_channels": [
+              "inline_script"
+            ]
+          },
+          "variant_option": "16kg"
+        }
+      ],
+      "atomic_fields": {
+        "product_price": {
+          "amount": "Exact price of matched pack",
+          "currency": "Explicit currency identifier",
+          "variant": "Exact pack-size label"
+        },
+        "delivery_charge": {
+          "amount": "Exact delivery charge",
+          "basis": "Per box/parcel/order basis",
+          "vat": "Explicit VAT basis",
+          "zone": "Geography/zone condition",
+          "packing": "Explicit product quantity per box, absent stays unknown",
+          "surcharge": "Explicit surcharge and applicable zone, absent stays unknown",
+          "order_condition": "Order value or quantity condition under which this delivery charge applies, quoted in the same sentence as the charge; absent stays unknown"
+        },
+        "free_delivery_threshold": {
+          "amount": "Exact threshold",
+          "comparison": "Over or inclusive threshold",
+          "zone": "Eligible zones",
+          "weight_limit": "Weight limit if any; absent stays unknown",
+          "discount_condition": "Threshold before or after discounts, if stated",
+          "exceptions": "Exceptions to free shipping"
+        },
+        "delivery_time": {
+          "dispatch": "Dispatch timing",
+          "arrival": "Arrival timing"
+        },
+        "delivery_geography": {
+          "included": "Included area",
+          "excluded": "Excluded area",
+          "surcharge": "Remote-area surcharge conditions"
+        }
+      },
+      "max_pages": 2
+    },
+    "steps": [
+      "Read approved public source",
+      "Extract literal evidence",
+      "Check fields and context",
+      "Recover missing evidence within bounds",
+      "Report facts, conflicts and unknowns"
+    ],
+    "budgets": {
+      "pages_per_site": 2,
+      "store_data_files_per_site": 1,
+      "tool_steps": 24,
+      "generation_calls": 6
+    }
+  },
+  "rows": [
+    {
+      "site": "demo_mill_three",
+      "input": "Compare Demo Mill Three (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+      "atomic_fields": {
+        "product_price": {
+          "status": "incomplete_literal_variation",
+          "missing": [],
+          "facts": {
+            "currency": [
+              {
+                "value": "£",
+                "quote": "£1.23",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "variant": [
+              {
+                "value": "1KG",
+                "quote": "1KG",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "16kg",
+                "quote": "16kg | £15.67 | available=True",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour.js",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "amount": [
+              {
+                "value": "£15.67",
+                "quote": "16kg | £15.67 | available=True",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour.js",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {
+            "variant": [
+              {
+                "value": "1KG",
+                "quote": "1KG",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "16kg",
+                "quote": "16kg | £15.67 | available=True",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour.js",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "variation_note": "Different numbers quoted for variant; human review needed to judge whether the meanings match; not a confirmed contradiction."
+        },
+        "delivery_charge": {
+          "status": "incomplete",
+          "missing": [
+            "amount",
+            "basis",
+            "vat",
+            "zone",
+            "packing",
+            "surcharge",
+            "order_condition"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "free_delivery_threshold": {
+          "status": "incomplete",
+          "missing": [
+            "amount",
+            "comparison",
+            "zone",
+            "weight_limit",
+            "discount_condition",
+            "exceptions"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_time": {
+          "status": "incomplete",
+          "missing": [
+            "arrival"
+          ],
+          "facts": {
+            "dispatch": [
+              {
+                "value": "3-5 working days",
+                "quote": "- Orders leave the mill within 3-5 working days",
+                "source_url": "https://demo-mill-three.example/products/demo-canadian-flour",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_geography": {
+          "status": "incomplete",
+          "missing": [
+            "included",
+            "excluded",
+            "surcharge"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        }
+      },
+      "pages_visited": [
+        "https://demo-mill-three.example/products/demo-canadian-flour",
+        "https://demo-mill-three.example/products/demo-canadian-flour.js",
+        "https://demo-mill-three.example/pages/delivery"
+      ],
+      "page_texts": [
+        {
+          "source_url": "https://demo-mill-three.example/products/demo-canadian-flour",
+          "text": "Demo Mill Three\nDemo Canadian-style Flour\nFrom £1.23\nSize\n1KG\nDelivery\n- Orders leave the mill within 3-5 working days\nQuestions? Use the contact form."
+        },
+        {
+          "source_url": "https://demo-mill-three.example/products/demo-canadian-flour.js",
+          "text": "Demo Canadian-style Flour\n(prices as given by the store divided by 100; this data does not state a currency)\n1kg | £1.23 | available=True\n16kg | £15.67 | available=True\n25kg | £22.34 | available=True"
+        },
+        {
+          "source_url": "https://demo-mill-three.example/pages/delivery",
+          "text": "Synthetic page with no delivery details."
+        }
+      ],
+      "stop_reason": "page_budget",
+      "errors": [],
+      "rejected_claims": [
+        {
+          "source_url": "https://demo-mill-three.example/products/demo-canadian-flour",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        },
+        {
+          "source_url": "https://demo-mill-three.example/pages/delivery",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        }
+      ],
+      "table_context": {},
+      "review_required": true
+    }
+  ],
+  "trace": [
+    {
+      "step": 1,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 2,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 3,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 4,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "incomplete",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 5,
+      "tool": "select_variant",
+      "why": "Try explicitly planned visible pack option"
+    },
+    {
+      "step": 6,
+      "tool": "variant_data",
+      "why": "One approved own-site public variant endpoint, read in code"
+    },
+    {
+      "step": 7,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "incomplete_literal_variation",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 8,
+      "tool": "evidence_link",
+      "why": "Choose same-source missing-field evidence, not page instructions"
+    },
+    {
+      "step": 9,
+      "tool": "evidence_link",
+      "why": "No link found on the page; use the configured same-site delivery page"
+    },
+    {
+      "step": 10,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 11,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 12,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 13,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "incomplete_literal_variation",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 14,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "demo_mill_three",
+      "stop_reason": "page_budget"
+    }
+  ],
+  "tool_steps": 10,
+  "generation_calls": 2,
+  "readable": "# Scout planned research\n\nRead-only evidence snapshot, 27 October 2026. SYNTHETIC test recording of invented pages.\n\n# Scott planned research\n\nRead-only evidence snapshot; the read date is not recorded with this result. Literal evidence is not a semantic proof or exhaustive extraction. No cheapest/model-quality verdict.\n\n## demo_mill_three\n\nInput: Compare Demo Mill Three (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)\n\n| Field | Observed claims | Status / unknowns |\n| --- | --- | --- |\n| product_price | currency: £ ([source](https://demo-mill-three.example/products/demo-canadian-flour))<br>variant: 1KG ([source](https://demo-mill-three.example/products/demo-canadian-flour))<br>variant: 16kg ([source](https://demo-mill-three.example/products/demo-canadian-flour.js))<br>amount: 15.67 ([source](https://demo-mill-three.example/products/demo-canadian-flour.js)) | incomplete_literal_variation; Different numbers quoted for variant; human review needed to judge whether the meanings match; not a confirmed contradiction. |\n| delivery_charge | No accepted claims | incomplete; missing: amount, basis, vat, zone, packing, surcharge, order_condition |\n| free_delivery_threshold | No accepted claims | incomplete; missing: amount, comparison, zone, weight_limit, discount_condition, exceptions |\n| delivery_time | dispatch: 3-5 working days ([source](https://demo-mill-three.example/products/demo-canadian-flour)) | incomplete; missing: arrival |\n| delivery_geography | No accepted claims | incomplete; missing: included, excluded, surcharge |\n\n### Evidence trail\n\n- product_price.currency: \"£1.23\" ([source](https://demo-mill-three.example/products/demo-canadian-flour))\n- product_price.variant: \"1KG\" ([source](https://demo-mill-three.example/products/demo-canadian-flour))\n- product_price.variant: \"16kg | 15.67 | available=True\" ([source](https://demo-mill-three.example/products/demo-canadian-flour.js))\n- product_price.amount: \"16kg | 15.67 | available=True\" ([source](https://demo-mill-three.example/products/demo-canadian-flour.js))\n- delivery_time.dispatch: \"- Orders leave the mill within 3-5 working days\" ([source](https://demo-mill-three.example/products/demo-canadian-flour))\n\nHuman review required. Unknowns are final output for this bounded run, not a promise of further research.\n"
+}
