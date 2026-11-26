@@ -1,0 +1,279 @@
+{
+  "contract_version": "comparison-contract-v0.1",
+  "spec": "scott-m1-comparison-reference-set-spec-v0.1.md",
+  "written": "2026-11-25",
+  "status": "development material: exposed, reviewed cases; not held-out evidence",
+  "revision": "v1.2, 25 Nov 2026: comparability gate accepted as a business-correctness fix. D1, D2, D3, D4 and D6 inputs unchanged; their verified totals carry unknown VAT bases (no quoted VAT basis on any delivery charge; Demo Mill Three (invented) and Demo Mill Two (invented) product prices state none), so the expected verdict is not_comparable and the claim abstains from ranking. v1 (comparison_expected.v1.json) and v1.1 (comparison_expected.v1.1.json, ranking wording) preserved unchanged.",
+  "read_date": "2026-11-22",
+  "currency": "GBP",
+  "supplier_states_from_offer_fixtures": {
+    "demo_mill_one": {"offer_state": "confirmed", "headline": "33.92", "vat_included": true, "valid_until": "2026-11-23"},
+    "demo_mill_two": {"offer_state": "confirmed", "headline": "47.00", "availability": "unavailable"},
+    "demo_mill_three": {"offer_state": "conflicting", "headline": null}
+  },
+  "cases": [
+    {
+      "id": "A1", "group": "delivery-rule membership",
+      "summary": "Rule says 'from £100', order is exactly £100.00: qualifies.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "OBS_FROM_50 + DEMO_ONE_OBS (charge £9.90)", "order_value": "100.00", "destination": "England mainland"},
+      "constructed_inputs": ["OBS_FROM_50"],
+      "expected": {
+        "membership": "qualified",
+        "delivery": {"applied": {"amount": "0.00", "basis_quote": "Free standard delivery on orders from £100"}},
+        "reasoning_must_show": "equality qualifies because the quoted rule says 'from'"
+      }
+    },
+    {
+      "id": "A2", "group": "delivery-rule membership",
+      "summary": "Derived rule says 'over £100', order is exactly £100.00: does not qualify; standard £9.90 applies.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order_value": "100.00", "destination": "England mainland"},
+      "constructed_inputs": [],
+      "expected": {
+        "membership": "not_qualified",
+        "delivery": {"applied": {"amount": "9.90", "basis_quote": "Standard delivery costs £9.90"}},
+        "reasoning_must_show": "equality does not qualify because the quoted rule says 'over'"
+      }
+    },
+    {
+      "id": "A3", "group": "delivery-rule membership",
+      "summary": "Order £99.98 is 0.02 below the derived over-£100 rule: does not qualify.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order_value": "99.98", "destination": "England mainland"},
+      "constructed_inputs": [],
+      "expected": {
+        "membership": "not_qualified",
+        "delivery": {"applied": {"amount": "9.90", "basis_quote": "Standard delivery costs £9.90"}}
+      }
+    },
+    {
+      "id": "A4", "group": "delivery-rule membership",
+      "summary": "Pre-VAT threshold with the rate stated in the quote: conversion grounded, membership resolved.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "OBS_PRE_VAT_WITH_RATE + DEMO_ONE_OBS (charge £9.90)", "order_value": "150.00", "order_value_basis": "VAT-inclusive (Demo Mill One (invented) priceSpecification valueAddedTaxIncluded true)", "destination": "England mainland"},
+      "constructed_inputs": ["OBS_PRE_VAT_WITH_RATE"],
+      "expected": {
+        "membership": "qualified",
+        "delivery": {"applied": {"amount": "0.00", "basis_quote": "Free delivery on orders over £120 before VAT (VAT at 20%)"}},
+        "reasoning_must_show": "£150.00 including VAT is £125.00 excluding VAT at the quoted 20%, which is over £120"
+      }
+    },
+    {
+      "id": "A5", "group": "delivery-rule membership",
+      "summary": "Two derived Demo Mill One (invented) charges (£9.90 standard, £13.40 per parcel surcharge zones) on one order: both listed, never merged, £9.90 selected for England mainland.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order": "ORDER_1_SACK_ENGLAND", "order_value": "33.92"},
+      "constructed_inputs": [],
+      "expected": {
+        "membership": "not_qualified",
+        "delivery": {"applied": {"amount": "9.90", "basis_quote": "Standard delivery costs £9.90"},
+                     "also_listed": [{"amount": "13.40", "basis": "per parcel", "zones": "North Coast Isles, Far Valley District, Northern Ireland", "applied": false}]},
+        "reasoning_must_show": "the £13.40 per-parcel quote is a separate charge for named zones, not merged into or replacing the standard charge"
+      }
+    },
+    {
+      "id": "A6", "group": "delivery-rule membership",
+      "summary": "The derived £13.40-per-parcel quote names North Coast Isles, Far Valley District and Northern Ireland: not applied to an England mainland order.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order": "ORDER_1_SACK_ENGLAND", "order_value": "33.92"},
+      "constructed_inputs": [],
+      "expected": {
+        "delivery": {"applied": {"amount": "9.90"}, "not_applied": [{"amount": "13.40", "reason": "destination outside the quoted surcharge zones"}]}
+      }
+    },
+    {
+      "id": "A7", "group": "delivery-rule membership",
+      "summary": "Northern Ireland order, one parcel: the derived £13.40 per-parcel quote applies with its basis shown.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order": "ORDER_1_SACK_NI", "order_value": "33.92"},
+      "constructed_inputs": [],
+      "expected": {
+        "delivery": {"applied": {"amount": "13.40", "basis": "per parcel", "basis_quote": "£13.40 per parcel"}},
+        "reasoning_must_show": "destination is inside the quoted surcharge zones; parcel count 1 from the order"
+      }
+    },
+    {
+      "id": "B1", "group": "order eligibility",
+      "summary": "Constructed minimum order £40, order £33.92: supplier ineligible, reason shown.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "OBS_MIN_ORDER_20 + DEMO_ONE_OBS", "order": "ORDER_1_SACK_ENGLAND", "order_value": "33.92"},
+      "constructed_inputs": ["OBS_MIN_ORDER_20"],
+      "expected": {"eligibility": {"state": "ineligible", "reason": "minimum order value £40 not met", "basis_quote": "Minimum order value £40"}}
+    },
+    {
+      "id": "B2", "group": "order eligibility",
+      "summary": "Derived Demo Mill Two (invented) state: price confirmed but 16kg unavailable: excluded from any cheapest claim.",
+      "inputs": {"supplier": "demo_mill_two", "offer": "demo_two_raw()", "observations": "DEMO_TWO_OBS", "order": "ORDER_1_SACK_ENGLAND"},
+      "constructed_inputs": [],
+      "expected": {"eligibility": {"state": "ineligible", "reason": "product unavailable", "evidence": "offer decision availability 'unavailable' from three agreeing signals"}}
+    },
+    {
+      "id": "B3", "group": "order eligibility",
+      "summary": "Derived Demo Mill One (invented) geography excludes the Channel Islands: destination Channel Islands is ineligible.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order": "ORDER_1_SACK_CHANNEL_ISLANDS"},
+      "constructed_inputs": [],
+      "expected": {"eligibility": {"state": "ineligible", "reason": "destination excluded by quoted delivery geography", "basis_quote": "The Channel Islands"}}
+    },
+    {
+      "id": "B4", "group": "order eligibility",
+      "summary": "Requested pack 25kg has no configured binding (existing offer rule): supplier ineligible for this comparison.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order": {"pack": "25kg", "quantity": 1, "destination": "England mainland"}},
+      "constructed_inputs": [],
+      "expected": {"eligibility": {"state": "ineligible", "reason": "offer not confirmed for the requested pack", "evidence": "offer decision not_confirmed (unconfigured pack)"}}
+    },
+    {
+      "id": "C1", "group": "delivered totals",
+      "summary": "Derived Demo Mill One (invented), one sack to England: £33.92 + £9.90 = £43.82, arithmetic and basis notes shown.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "order": "ORDER_1_SACK_ENGLAND", "order_value": "33.92"},
+      "constructed_inputs": [],
+      "expected": {
+        "eligibility": {"state": "eligible"},
+        "delivery": {"applied": {"amount": "9.90"}},
+        "delivered_total": {"amount": "43.82", "arithmetic": "33.92 + 9.90", "basis_notes": ["product price quoted VAT-inclusive", "delivery charge VAT basis not stated in the quotes"]}
+      }
+    },
+    {
+      "id": "C2", "group": "delivered totals",
+      "summary": "Pre-VAT threshold with quoted rate (A4 inputs, order £150.00): free delivery resolved and total equals the goods value.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "OBS_PRE_VAT_WITH_RATE + DEMO_ONE_OBS", "order_value": "150.00", "destination": "England mainland"},
+      "constructed_inputs": ["OBS_PRE_VAT_WITH_RATE"],
+      "expected": {
+        "delivery": {"applied": {"amount": "0.00"}},
+        "delivered_total": {"amount": "150.00", "arithmetic": "150.00 + 0.00", "conversion_shown": "£150.00 VAT-inclusive = £125.00 ex VAT at quoted 20%, over £120"}
+      }
+    },
+    {
+      "id": "C3", "group": "delivered totals",
+      "summary": "Pre-VAT threshold with no rate quoted and a VAT-inclusive price: membership abstains, no total.",
+      "inputs": {"supplier": "demo_mill_one", "offer": "demo_one_raw()", "observations": "OBS_PRE_VAT_NO_RATE + DEMO_ONE_OBS", "order_value": "150.00", "destination": "England mainland"},
+      "constructed_inputs": ["OBS_PRE_VAT_NO_RATE"],
+      "expected": {
+        "membership": "abstained",
+        "delivery": {"abstained": {"reason": "threshold is quoted before VAT and no VAT rate is quoted; a VAT-inclusive order value cannot be compared"}},
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "C4", "group": "delivered totals",
+      "summary": "Currency conflict at offer level (existing offer rule): no total.",
+      "inputs": {"supplier": "demo_mill_two", "offer": "demo_two_raw() + conflicting EUR offer (as in test_currency_tax_and_availability_disagreements_are_conflicts)", "observations": "DEMO_TWO_OBS", "order": "ORDER_1_SACK_ENGLAND"},
+      "constructed_inputs": ["the conflicting EUR offer already constructed in the existing offer suite"],
+      "expected": {"offer_state": "conflicting", "delivered_total": null}
+    },
+    {
+      "id": "C5", "group": "delivered totals",
+      "summary": "Derived Demo Mill Two (invented): threshold quoted but no delivery charge amount captured; order £47.00 is under £100. No total, and never treated as free.",
+      "inputs": {"supplier": "demo_mill_two", "offer": "demo_two_available()", "observations": "DEMO_TWO_OBS", "order": "ORDER_1_SACK_ENGLAND", "order_value": "47.00"},
+      "constructed_inputs": ["demo_two_available() availability flip"],
+      "expected": {
+        "membership": "not_qualified",
+        "delivery": {"abstained": {"reason": "no delivery charge amount was quoted; absence of a charge quote is not free delivery"}},
+        "delivered_total": null,
+        "wording_must_say": "delivery charge unknown, so no delivered total"
+      }
+    },
+    {
+      "id": "C6", "group": "delivered totals",
+      "summary": "Regression guard: a minor-unit store record alone never supplies currency into a total.",
+      "inputs": {"supplier": "demo_mill_two", "offer": "application_json variant record only (as in test_minor_unit_store_record_alone_gives_no_currency_and_no_headline)", "observations": "DEMO_TWO_OBS", "order": "ORDER_1_SACK_ENGLAND"},
+      "constructed_inputs": [],
+      "expected": {"offer_state": "not_confirmed", "delivered_total": null, "reasoning_must_show": "minor-unit record corroborates but never supplies currency"}
+    },
+    {
+      "id": "D1", "group": "cheapest-result claim",
+      "summary": "All three suppliers have verified totals, but no delivery charge states a VAT basis and Demo Mill Three (invented)/Demo Mill Two (invented) product prices state none: no ranking, every total listed with its basis (v1.2).",
+      "inputs": {
+        "order": "ORDER_1_SACK_ENGLAND",
+        "suppliers": {
+          "demo_mill_one": {"offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "total": "43.82"},
+          "demo_mill_three": {"offer": "demo_three_agreeing('45.60')", "observations": "OBS_DEMO_THREE_DELIVERY_550", "total": "56.60"},
+          "demo_mill_two": {"offer": "demo_two_available()", "observations": "OBS_DEMO_TWO_DELIVERY_695", "total": "60.90"}
+        }
+      },
+      "constructed_inputs": ["demo_three_agreeing('45.60') uses the constructed agreeing page script", "OBS_DEMO_THREE_DELIVERY_550", "demo_two_available()", "OBS_DEMO_TWO_DELIVERY_695"],
+      "expected": {
+        "verdict": {"not_comparable": {"verified": ["demo_mill_one", "demo_mill_three", "demo_mill_two"], "reason": "VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge, Demo Mill Two (invented) product price, Demo Mill Two (invented) delivery charge"}},
+        "claim_licensed": "No ranking: the 3 suppliers with verified prices are not on a comparable cost basis (VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge, Demo Mill Two (invented) product price, Demo Mill Two (invented) delivery charge). Delivered totals as quoted: Demo Mill One (invented) £43.82 (product price quoted VAT-inclusive; delivery charge VAT basis not stated in the quotes); Demo Mill Three (invented) £56.60 (product price VAT basis not stated; delivery charge VAT basis not stated in the quotes); Demo Mill Two (invented) £60.90 (product price VAT basis not stated; delivery charge VAT basis not stated in the quotes)."
+      }
+    },
+    {
+      "id": "D2", "group": "cheapest-result claim",
+      "summary": "Derived Demo Mill Two (invented) unavailable (excluded), Demo Mill Three (invented) constructed-available: two verified totals on unknown VAT bases, so no ranking; Demo Mill Two (invented) still named as excluded (v1.2).",
+      "inputs": {
+        "order": "ORDER_1_SACK_ENGLAND",
+        "suppliers": {
+          "demo_mill_one": {"offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "total": "43.82"},
+          "demo_mill_three": {"offer": "demo_three_agreeing('45.60')", "observations": "OBS_DEMO_THREE_DELIVERY_550", "total": "56.60"},
+          "demo_mill_two": {"offer": "demo_two_raw()", "observations": "DEMO_TWO_OBS", "eligibility": "ineligible: product unavailable"}
+        }
+      },
+      "constructed_inputs": ["demo_three_agreeing('45.60')", "OBS_DEMO_THREE_DELIVERY_550"],
+      "expected": {
+        "verdict": {"not_comparable": {"verified": ["demo_mill_one", "demo_mill_three"], "reason": "VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge", "excluded": [{"supplier": "demo_mill_two", "reason": "product unavailable"}]}},
+        "claim_licensed": "No ranking: the 2 suppliers with verified prices are not on a comparable cost basis (VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge). Delivered totals as quoted: Demo Mill One (invented) £43.82 (product price quoted VAT-inclusive; delivery charge VAT basis not stated in the quotes); Demo Mill Three (invented) £56.60 (product price VAT basis not stated; delivery charge VAT basis not stated in the quotes). Demo Mill Two (invented) excluded: 16kg unavailable."
+      }
+    },
+    {
+      "id": "D3", "group": "cheapest-result claim",
+      "summary": "Demo Mill Three (invented) conflicting (could not be verified); Demo Mill One (invented) and Demo Mill Two (invented) verified but on unknown VAT bases: no ranking (v1.2).",
+      "inputs": {
+        "order": "ORDER_1_SACK_ENGLAND",
+        "suppliers": {
+          "demo_mill_one": {"offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "total": "43.82"},
+          "demo_mill_two": {"offer": "demo_two_available()", "observations": "OBS_DEMO_TWO_DELIVERY_695", "total": "60.90"},
+          "demo_mill_three": {"offer": "demo_three_raw()", "observations": "DEMO_THREE_OBS", "offer_state": "conflicting"}
+        }
+      },
+      "constructed_inputs": ["demo_two_available()", "OBS_DEMO_TWO_DELIVERY_695"],
+      "expected": {
+        "verdict": {"not_comparable": {"verified": ["demo_mill_one", "demo_mill_two"], "reason": "VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Two (invented) product price, Demo Mill Two (invented) delivery charge", "unverifiable": [{"supplier": "demo_mill_three", "reason": "conflicting prices: page £38.00 vs structured data £45.60"}]}},
+        "claim_licensed": "No ranking: the 2 suppliers with verified prices are not on a comparable cost basis (VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Two (invented) product price, Demo Mill Two (invented) delivery charge). Delivered totals as quoted: Demo Mill One (invented) £43.82 (product price quoted VAT-inclusive; delivery charge VAT basis not stated in the quotes); Demo Mill Two (invented) £60.90 (product price VAT basis not stated; delivery charge VAT basis not stated in the quotes). Demo Mill Three (invented) could not be verified: its page shows conflicting prices."
+      }
+    },
+    {
+      "id": "D4", "group": "cheapest-result claim",
+      "summary": "Constructed equal totals at £43.82 on unknown VAT bases: neither a tie nor a ranking is claimed (v1.2).",
+      "inputs": {
+        "order": "ORDER_1_SACK_ENGLAND",
+        "suppliers": {
+          "demo_mill_one": {"offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "total": "43.82"},
+          "demo_mill_three": {"offer": "demo_three_agreeing('33.92')", "observations": "OBS_DEMO_THREE_DELIVERY_495", "total": "43.82"}
+        }
+      },
+      "constructed_inputs": ["demo_three_agreeing('33.92')", "OBS_DEMO_THREE_DELIVERY_495 (delivery_charge amount £9.90, same shape as OBS_DEMO_THREE_DELIVERY_550)"],
+      "expected": {
+        "verdict": {"not_comparable": {"verified": ["demo_mill_one", "demo_mill_three"], "reason": "VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge"}},
+        "claim_licensed": "No ranking: the 2 suppliers with verified prices are not on a comparable cost basis (VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge). Delivered totals as quoted: Demo Mill One (invented) £43.82 (product price quoted VAT-inclusive; delivery charge VAT basis not stated in the quotes); Demo Mill Three (invented) £43.82 (product price VAT basis not stated; delivery charge VAT basis not stated in the quotes)."
+      }
+    },
+    {
+      "id": "D5", "group": "cheapest-result claim",
+      "summary": "Nothing verifiable (Demo Mill One (invented) offer expired after 2026-11-23, Demo Mill Two (invented) unavailable, Demo Mill Three (invented) conflicting): no comparison claim at all.",
+      "inputs": {
+        "read_date": "2026-11-24",
+        "order": "ORDER_1_SACK_ENGLAND",
+        "suppliers": {
+          "demo_mill_one": {"offer": "demo_one_raw()", "offer_state": "not_confirmed (expired)"},
+          "demo_mill_two": {"offer": "demo_two_raw()", "eligibility": "ineligible"},
+          "demo_mill_three": {"offer": "demo_three_raw()", "offer_state": "conflicting"}
+        }
+      },
+      "constructed_inputs": [],
+      "expected": {
+        "verdict": "none",
+        "claim_licensed": "No comparison: no supplier has a verified current price. Demo Mill One (invented)'s quoted price expired 23 Nov 2026; Demo Mill Two (invented) is unavailable; Demo Mill Three (invented) shows conflicting prices."
+      }
+    },
+    {
+      "id": "D6", "group": "cheapest-result claim",
+      "summary": "Product-price cheapest is not delivered cheapest, but VAT bases are unknown, so no ranking (v1.2). The delivery-decides behaviour is shown with known VAT in synthetic scenario S1.",
+      "inputs": {
+        "order": "ORDER_1_SACK_ENGLAND",
+        "suppliers": {
+          "demo_mill_one": {"offer": "demo_one_raw()", "observations": "DEMO_ONE_OBS", "total": "43.82"},
+          "demo_mill_three": {"offer": "demo_three_agreeing('30.00')", "observations": "OBS_DEMO_THREE_DELIVERY_900", "total": "48.00"}
+        }
+      },
+      "constructed_inputs": ["demo_three_agreeing('30.00')", "OBS_DEMO_THREE_DELIVERY_900"],
+      "expected": {
+        "verdict": {"not_comparable": {"verified": ["demo_mill_one", "demo_mill_three"], "reason": "VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge"}},
+        "claim_licensed": "No ranking: the 2 suppliers with verified prices are not on a comparable cost basis (VAT basis not stated for: Demo Mill One (invented) delivery charge, Demo Mill Three (invented) product price, Demo Mill Three (invented) delivery charge). Delivered totals as quoted: Demo Mill One (invented) £43.82 (product price quoted VAT-inclusive; delivery charge VAT basis not stated in the quotes); Demo Mill Three (invented) £48.00 (product price VAT basis not stated; delivery charge VAT basis not stated in the quotes).",
+        "claim_forbidden": "Demo Mill Three (invented) is the cheapest"
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,251 @@
+{
+  "set": "m1-adversarial-v1.2",
+  "written": "2026-11-25",
+  "protocol": "BLIND: these cases and expected answers were written from the spec and the derived quoted rules BEFORE reading scout/engine/supplier_comparison.py. Disagreements are investigated, not resolved by tuning expectations to the implementation.",
+  "status": "held-out relative to the M1 build: none of these inputs appeared in the development fixtures, prompts or tests",
+  "read_date": "2026-11-22",
+  "currency": "GBP",
+  "cases": [
+    {
+      "id": "H1",
+      "theme": "qualifying-free must not override unknown terms in a surcharge zone",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS (derived)",
+        "order": {
+          "pack": "16kg",
+          "quantity": 3,
+          "destination": "Northern Ireland"
+        },
+        "order_value": "101.76"
+      },
+      "business_semantics": "Order value £101.76 is over £100, but the free-delivery quote is starred ('Orders over £100*', 'see terms') and its terms were never captured, so free delivery cannot be confirmed. The NI surcharge quote ('£13.40 per parcel ... Northern Ireland') is unconditional and matches the destination, 1 parcel stated per order (single consignment assumption must be shown). Expected: membership abstained; charge applied £13.40 with basis quote; total £117.66 shown WITH the caveat that an uncaptured free-delivery rule exists; the claim must NOT say free delivery. REVISED: no definitive total and no speculative upper bound; the £13.40 quote is surfaced as a labelled component, and because 3 sacks are not a stated parcel count the charge amount itself abstains.",
+      "expected": {
+        "membership": "abstained",
+        "delivery": {
+          "components": [
+            {
+              "amount": "13.40",
+              "basis": "per parcel",
+              "label": "quoted charge for this destination, parcel count not stated"
+            }
+          ],
+          "free_claim_forbidden": true
+        },
+        "delivered_total": null,
+        "no_upper_bound_claim": true
+      }
+    },
+    {
+      "id": "H2",
+      "theme": "vague zone wording abstains",
+      "inputs": {
+        "supplier": "demo_mill_two",
+        "offer": "demo_two_available()",
+        "observations": "DEMO_TWO_OBS (derived: 'Free carriage on orders Over £100 for Most Of UK Areas* - see terms')",
+        "order_value": "120.00",
+        "destination": "England mainland"
+      },
+      "business_semantics": "'Most Of UK Areas*' does not establish that England mainland is inside the zone, and the terms are starred and uncaptured. Even though the value qualifies, membership must abstain, and with no charge amount quoted anywhere there is no total.",
+      "expected": {
+        "membership": "abstained",
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "H3",
+      "theme": "restrictive rule beats qualifying-free",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS + constructed: free_delivery_threshold exclusion quote 'Free delivery offer excludes Northern Ireland'",
+        "order": {
+          "pack": "16kg",
+          "quantity": 4,
+          "destination": "Northern Ireland"
+        },
+        "order_value": "135.68"
+      },
+      "constructed_inputs": [
+        "the exclusion quote"
+      ],
+      "business_semantics": "Value qualifies under the derived over-£100 rule, but an explicit quoted exclusion names the destination. Expected: not qualified for free; surcharge £13.40 per parcel applies; total £151.58. REVISED: the exclusion makes free delivery not qualified (not merely abstained); no total because the parcel count is not stated.",
+      "expected": {
+        "membership": "not_qualified",
+        "membership_reason": "destination excluded by the quoted rule",
+        "delivery": {
+          "components": [
+            {
+              "amount": "13.40",
+              "basis": "per parcel",
+              "label": "quoted charge for this destination, parcel count not stated"
+            }
+          ]
+        },
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "H4",
+      "theme": "two different standard charges conflict, no silent pick",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS + constructed: delivery_charge amount quote 'Standard delivery £11.90'",
+        "order": "ORDER_1_SACK_ENGLAND",
+        "order_value": "33.92"
+      },
+      "constructed_inputs": [
+        "the £11.90 quote"
+      ],
+      "business_semantics": "Two quoted standard charges disagree (£9.90 vs £11.90). Expected: delivery abstained as conflicting; no total; both amounts listed.",
+      "expected": {
+        "delivery": {
+          "abstained": {
+            "reason": "conflicting delivery charge quotes"
+          }
+        },
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "H5",
+      "theme": "unverified order value blocks membership",
+      "inputs": {
+        "supplier": "demo_mill_three",
+        "offer": "demo_three_raw() (conflicting offer)",
+        "observations": "constructed: free_delivery_threshold 'over £100'",
+        "order_value": "101.76"
+      },
+      "constructed_inputs": [
+        "the threshold quote"
+      ],
+      "business_semantics": "The order value derives from a conflicting offer, so it is not a verified input. Expected: membership abstained with the reason naming the unverified order value, no total.",
+      "expected": {
+        "offer_state": "conflicting",
+        "membership": "abstained",
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "H6",
+      "theme": "per-parcel charge with unknown parcel count abstains",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS (derived)",
+        "order": {
+          "pack": "16kg",
+          "quantity": 3,
+          "destination": "Northern Ireland"
+        },
+        "order_value": "101.76",
+        "parcel_count": "not stated"
+      },
+      "business_semantics": "The NI charge is quoted per parcel; three 16kg sacks may be one to three parcels and no quote states the packing. Expected: delivery abstained (parcel count unknown) OR applied with an explicit stated assumption of 1 parcel; a silently multiplied or silently single charge are both wrong. No total unless the assumption is shown next to it.",
+      "expected": {
+        "delivery": {
+          "abstained": {
+            "reason": "parcel count not stated in the quotes"
+          }
+        },
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "H7",
+      "theme": "free delivery into a named surcharge zone abstains",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS (derived)",
+        "order": {
+          "pack": "16kg",
+          "quantity": 4,
+          "destination": "North Coast Isles"
+        },
+        "order_value": "135.68"
+      },
+      "business_semantics": "The free rule's zone is 'UK'/'Standard UK' and the surcharge quote names North Coast Isles. Whether free standard delivery extends to surcharge zones is exactly what the uncaptured terms would say. Expected: abstain, no free claim.",
+      "expected": {
+        "membership": "abstained",
+        "delivery": {
+          "free_claim_forbidden": true
+        }
+      }
+    },
+    {
+      "id": "H8",
+      "theme": "same charge quoted on two pages applies once",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS (derived: '£9.90' on product page AND delivery page)",
+        "order": "ORDER_1_SACK_ENGLAND",
+        "order_value": "33.92"
+      },
+      "business_semantics": "Two agreeing quotes of the same charge are one charge. Expected: applied £9.90 once; total £43.82, never £53.72.",
+      "expected": {
+        "delivery": {
+          "applied": {
+            "amount": "9.90"
+          }
+        },
+        "delivered_total": {
+          "amount": "43.82",
+          "double_count_forbidden": "53.72"
+        }
+      }
+    },
+    {
+      "id": "H9",
+      "theme": "amountless threshold quote abstains",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "constructed: free_delivery_threshold comparison 'qualifying', quote 'Free delivery on qualifying orders' (no amount)",
+        "order_value": "33.92",
+        "destination": "England mainland"
+      },
+      "constructed_inputs": [
+        "the amountless quote"
+      ],
+      "business_semantics": "No threshold amount means membership cannot be evaluated. Expected: abstain and report the unevaluable rule with its quote; the standard 9.90 from the derived charge quote is surfaced as a labelled component only; NO total, because the 9.90 applies only if the unevaluable rule does not qualify, so any total is speculative.",
+      "expected": {
+        "membership": "abstained",
+        "unevaluable_rules_reported": true,
+        "delivery": {
+          "components": [
+            {
+              "amount": "9.90",
+              "label": "would apply if the unevaluable free-delivery rule does not qualify"
+            }
+          ]
+        },
+        "delivered_total": null
+      }
+    },
+    {
+      "id": "H10",
+      "theme": "currency mismatch between order value and rule abstains",
+      "inputs": {
+        "supplier": "demo_mill_one",
+        "offer": "demo_one_raw()",
+        "observations": "DEMO_ONE_OBS (derived)",
+        "order_value": {
+          "amount": "101.76",
+          "currency": "EUR"
+        },
+        "destination": "England mainland"
+      },
+      "business_semantics": "The rule is in GBP, the order value in EUR. No conversion may be assumed. Expected: membership abstained naming the currency mismatch. REVISED: order_value in explicit currency form; mismatch with the GBP rule abstains, never crashes, never converts.",
+      "expected": {
+        "membership": "abstained",
+        "membership_reason": "currency mismatch",
+        "delivered_total": null
+      }
+    }
+  ],
+  "revision": "v1.2, 2026-11-25: H9 revised under the SAME conservative-totals design ruling as v1.1 - v1.1 inconsistently kept a 43.82 total-with-caveat for H9, but the standard 9.90 charge only applies if the unevaluable free-delivery rule does not qualify, so any total is speculative. Now: no total, the 9.90 charge is a labelled component, the unevaluable rule is reported with its quote. v1 blind original and v1.1 preserved separately in Drive."
+}
