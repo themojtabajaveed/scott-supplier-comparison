@@ -1,0 +1,270 @@
+{
+  "state": "bounded_result_review_required",
+  "question": "Compare Ministral 3 8B Standard USD uncached input and output per million tokens",
+  "plan": {
+    "question": "Compare Ministral 3 8B Standard USD uncached input and output per million tokens",
+    "domain": "provider",
+    "state": "ready",
+    "gaps": [],
+    "entities": {
+      "models": [
+        "Ministral 3 8B"
+      ],
+      "requested_context": "Compare Ministral 3 8B Standard USD uncached input and output per million tokens"
+    },
+    "workflow": {
+      "name": "provider",
+      "question": "Compare Ministral 3 8B Standard USD uncached input and output per million tokens",
+      "fields": {
+        "model_price_input": "Named model standard uncached text input price, USD per 1M tokens, model and pricing conditions.",
+        "model_price_output": "Named model standard text output price, USD per 1M tokens, model and pricing conditions."
+      },
+      "required": [
+        "model_price_input",
+        "model_price_output"
+      ],
+      "max_pages": 2,
+      "sites": [
+        {
+          "name": "demo_provider_one",
+          "url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+          "model": "Ministral 3 8B",
+          "question": "Compare Ministral 3 8B Standard USD uncached input and output per million tokens"
+        }
+      ],
+      "atomic_fields": {
+        "model_price_input": {
+          "amount": "Standard uncached input price",
+          "model": "Exact model row label",
+          "currency": "Currency",
+          "unit": "Token unit",
+          "processing": "Standard processing/context conditions",
+          "region": "Regional/global inference condition, separate from Standard processing"
+        },
+        "model_price_output": {
+          "amount": "Standard output price",
+          "model": "Exact model row label",
+          "currency": "Currency",
+          "unit": "Token unit",
+          "processing": "Standard processing/context conditions",
+          "region": "Regional/global inference condition, separate from Standard processing"
+        }
+      },
+      "atomic_requirements": {
+        "model_price_input": {
+          "unit": "(?:/\\s*M\\b|MTok|million|1\\s*M\\b)"
+        },
+        "model_price_output": {
+          "unit": "(?:/\\s*M\\b|MTok|million|1\\s*M\\b)"
+        }
+      },
+      "require_table_context": true
+    },
+    "steps": [
+      "Read approved public source",
+      "Extract literal evidence",
+      "Check fields and context",
+      "Recover missing evidence within bounds",
+      "Report facts, conflicts and unknowns"
+    ],
+    "budgets": {
+      "pages_per_site": 2,
+      "store_data_files_per_site": 1,
+      "tool_steps": 24,
+      "generation_calls": 6
+    }
+  },
+  "rows": [
+    {
+      "site": "demo_provider_one",
+      "input": "Compare Ministral 3 8B Standard USD uncached input and output per million tokens",
+      "atomic_fields": {
+        "model_price_input": {
+          "status": "incomplete",
+          "missing": [
+            "region"
+          ],
+          "facts": {
+            "amount": [
+              {
+                "value": "$1.23",
+                "quote": "Ministral 3 8B: $1.23 input / $4.56 output",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "model": [
+              {
+                "value": "Ministral 3 8B",
+                "quote": "Ministral 3 8B: $1.23 input / $4.56 output",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "currency": [
+              {
+                "value": "USD",
+                "quote": "USD per million tokens, Standard",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "unit": [
+              {
+                "value": "per million tokens",
+                "quote": "USD per million tokens, Standard",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "processing": [
+              {
+                "value": "Standard",
+                "quote": "USD per million tokens, Standard",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {},
+          "context_status": {
+            "status": "incomplete",
+            "missing": [
+              "unique_table_scope"
+            ]
+          }
+        },
+        "model_price_output": {
+          "status": "incomplete",
+          "missing": [
+            "region"
+          ],
+          "facts": {
+            "amount": [
+              {
+                "value": "$4.56",
+                "quote": "Ministral 3 8B: $1.23 input / $4.56 output",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "model": [
+              {
+                "value": "Ministral 3 8B",
+                "quote": "Ministral 3 8B: $1.23 input / $4.56 output",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "currency": [
+              {
+                "value": "USD",
+                "quote": "USD per million tokens, Standard",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "unit": [
+              {
+                "value": "per million tokens",
+                "quote": "USD per million tokens, Standard",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "processing": [
+              {
+                "value": "Standard",
+                "quote": "USD per million tokens, Standard",
+                "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {},
+          "context_status": {
+            "status": "incomplete",
+            "missing": [
+              "unique_table_scope"
+            ]
+          }
+        }
+      },
+      "pages_visited": [
+        "https://demo-provider-one.sample.example/pricing/ministral-3-8b"
+      ],
+      "page_texts": [
+        {
+          "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+          "text": "DEMO FIXTURE, invented sample text, not a real pricing page. Ministral 3 8B: $1.23 input / $4.56 output, USD per million tokens, Standard. Mistral Large 3: $2.34 input / $5.67 output."
+        }
+      ],
+      "stop_reason": "no_relevant_source",
+      "errors": [],
+      "rejected_claims": [
+        {
+          "source_url": "https://demo-provider-one.sample.example/pricing/ministral-3-8b",
+          "claims": {
+            "model_price_input": {},
+            "model_price_output": {}
+          }
+        }
+      ],
+      "table_context": {},
+      "review_required": true,
+      "store_data": {
+        "files": [],
+        "packs": []
+      }
+    }
+  ],
+  "trace": [
+    {
+      "step": 1,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 2,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 3,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 4,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "model_price_input": "incomplete",
+        "model_price_output": "incomplete"
+      }
+    },
+    {
+      "step": 5,
+      "tool": "evidence_link",
+      "why": "Choose same-source missing-field evidence, not page instructions"
+    },
+    {
+      "step": 6,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "demo_provider_one",
+      "stop_reason": "no_relevant_source"
+    }
+  ],
+  "tool_steps": 4,
+  "generation_calls": 1,
+  "readable": "# Scott planned research\n\nSample data invented for this demo, not evidence read from any website. Literal evidence is not a semantic proof or exhaustive extraction. No cheapest/model-quality verdict.\n\n## demo_provider_one\n\nInput: Compare Ministral 3 8B Standard USD uncached input and output per million tokens\n\n| Field | Observed claims | Status / unknowns |\n| --- | --- | --- |\n| model_price_input | amount: $1.23 ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>model: Ministral 3 8B ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>currency: USD ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>unit: per million tokens ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>processing: Standard ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b)) | incomplete; missing: region |\n| model_price_output | amount: $4.56 ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>model: Ministral 3 8B ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>currency: USD ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>unit: per million tokens ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))<br>processing: Standard ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b)) | incomplete; missing: region |\n\n### Evidence trail\n\n- model_price_input.amount: \"Ministral 3 8B: $1.23 input / $4.56 output\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_input.model: \"Ministral 3 8B: $1.23 input / $4.56 output\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_input.currency: \"USD per million tokens, Standard\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_input.unit: \"USD per million tokens, Standard\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_input.processing: \"USD per million tokens, Standard\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_output.amount: \"Ministral 3 8B: $1.23 input / $4.56 output\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_output.model: \"Ministral 3 8B: $1.23 input / $4.56 output\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_output.currency: \"USD per million tokens, Standard\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_output.unit: \"USD per million tokens, Standard\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n- model_price_output.processing: \"USD per million tokens, Standard\" ([source](https://demo-provider-one.sample.example/pricing/ministral-3-8b))\n\nHuman review required. Unknowns are final output for this bounded run, not a promise of further research.\n",
+  "demo_fixture_only": true,
+  "network_used": false
+}
