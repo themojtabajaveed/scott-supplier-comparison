@@ -1,0 +1,14 @@
+"""Source-checked provider extraction workflow. Not a model recommendation."""
+WORKFLOW = {'name': 'provider', 'question': 'Extract the named model standard uncached text input and output USD prices per 1 million tokens. Preserve model identity, processing and context conditions.', 'fields': {'model_price_input': 'Named model standard uncached text input price, USD per 1M tokens, model and pricing conditions.', 'model_price_output': 'Named model standard text output price, USD per 1M tokens, model and pricing conditions.'}, 'required': ['model_price_input', 'model_price_output'], 'max_pages': 2, 'sites': [{'name': 'openai', 'url': 'https://developers.openai.com/api/docs/pricing', 'model': 'gpt-6.1-sol', 'question': 'Extract ONLY gpt-6.1-sol. Standard processing, short context <=272K, uncached input; not batch, Fast or regional uplift. Return USD per million input and output tokens; do not use cached or batch prices.'}, {'name': 'anthropic', 'url': 'https://platform.claude.com/docs/en/about-claude/pricing', 'model': 'Claude Sonnet 5.5', 'question': 'Extract ONLY Claude Sonnet 5.5. Base input and output, standard global routing; not batch, cache or US-only inference. Return USD per million input and output tokens; do not use cached or batch prices.'}, {'name': 'mistral', 'url': 'https://docs.mistral.ai/inference/pricing', 'model': 'Mistral Large 3', 'question': 'Extract ONLY Mistral Large 3. USD, Standard, observe whether Regional inference is selected; do not infer a named alternative when unchecked; not cached input, batch or priority. Return USD per million input and output tokens; do not use cached or batch prices.'}]}
+
+# Exact model names the planner accepts, each with the WORKFLOW site that prices it.
+# Single source of truth: scout/engine/planner.py and scripts/scout_ui.py both read this list.
+SUPPORTED_MODELS = [('Ministral 3 8B', 'mistral'), ('Mistral Large 3', 'mistral'), ('gpt-6.1-sol', 'openai'), ('Claude Sonnet 5.5', 'anthropic')]
+
+# Atomic mode is opt-in while regression and live evaluation are in progress.
+ATOMIC_FIELDS = {'model_price_input': {'amount': 'Standard uncached input price', 'model': 'Exact model row label', 'currency': 'Currency', 'unit': 'Token unit', 'processing': 'Standard processing/context conditions'}, 'model_price_output': {'amount': 'Standard output price', 'model': 'Exact model row label', 'currency': 'Currency', 'unit': 'Token unit', 'processing': 'Standard processing/context conditions'}}
+
+for _schema in ATOMIC_FIELDS.values():
+    _schema["region"] = "Regional/global inference condition, separate from Standard processing"
+
+ATOMIC_REQUIREMENTS = {f:{"unit":r"(?:/\s*M\b|MTok|million|1\s*M\b)"} for f in ATOMIC_FIELDS}
