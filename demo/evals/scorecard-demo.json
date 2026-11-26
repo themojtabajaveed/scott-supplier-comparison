@@ -1,0 +1,240 @@
+{
+  "built_by": "scripts/build_scorecard.py",
+  "reference": {
+    "path": "demo/evals/demo_supplier_truth.yaml",
+    "seeded_at": "2026-11-25",
+    "header": [
+      "INVENTED reference for the demo suppliers, written on 25 Nov 2026 as test and demo data. It is not research, not",
+      "independent human verification, and not a supplier fact; every site, value and quote is invented on reserved",
+      ".example addresses. Same format as the live connector's reference file."
+    ]
+  },
+  "rubric": "demo/evals/demo_supplier_rubric.json",
+  "inputs": [
+    {
+      "path": "demo/evals/demo_supplier_truth.yaml",
+      "sha256": "7beb969a3e77cd7ab8f1c7217a2693d419d1292572a003f0c3c1ceaa584c19d4"
+    },
+    {
+      "path": "demo/evals/demo_supplier_rubric.json",
+      "sha256": "3939d552e78508ad8fe46d9f66ab8b752cd6d6ee7ba511335cb9e6b950779be4"
+    },
+    {
+      "path": "demo/recordings/demo_mill_one-result.json",
+      "sha256": "e524c82332103cc0e8e9138978ad47c09490a01f8a4577191e8823587da8e3bc"
+    },
+    {
+      "path": "demo/recordings/demo_mill_two-result.json",
+      "sha256": "d9a957f1819f00fb4f7dc6a54290c6fad6fb65c0e71c96dae48ff2cb5a2dcca9"
+    },
+    {
+      "path": "demo/recordings/demo_mill_three-result.json",
+      "sha256": "691e1b3c749f112e7d2456712071e1ed7afbc0254020ce8685eb9cc5e08ced15"
+    }
+  ],
+  "not_scored": "API pricing: there is a provider reference file, but no live provider run from the current engine to score.",
+  "runs": [
+    {
+      "id": "recorded-30oct",
+      "label": "Invented demo recordings (synthetic, not supplier facts)",
+      "read_on": "undated (invented)",
+      "files": [
+        "demo/recordings/demo_mill_one-result.json",
+        "demo/recordings/demo_mill_two-result.json",
+        "demo/recordings/demo_mill_three-result.json"
+      ],
+      "cells": [
+        {
+          "site": "demo_mill_one",
+          "field": "product_price",
+          "reference_value": "£12.34",
+          "reference_source": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+          "quoted": [
+            {
+              "claim": "amount",
+              "value": "£12.34",
+              "quote": "£12.34",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            },
+            {
+              "claim": "currency",
+              "value": "£",
+              "quote": "£12.34",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            },
+            {
+              "claim": "variant",
+              "value": "16kg",
+              "quote": "Demo Strong Flour 16kg",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            }
+          ],
+          "components_found": [
+            "GBP_12_34",
+            "matched_16kg",
+            "currency_GBP"
+          ],
+          "components_missing": [],
+          "outcome": "Agrees",
+          "reason": null
+        },
+        {
+          "site": "demo_mill_one",
+          "field": "delivery_charge",
+          "reference_value": "£3.80 standard",
+          "reference_source": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+          "quoted": [
+            {
+              "claim": "amount",
+              "value": "£3.80",
+              "quote": "Standard delivery costs £3.80",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            },
+            {
+              "claim": "amount",
+              "value": "£3.80",
+              "quote": "Standard delivery costs £3.80",
+              "source_url": "https://demo-mill-one.example/delivery/"
+            },
+            {
+              "claim": "basis",
+              "value": "per parcel",
+              "quote": "£6.40 per parcel to:",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            },
+            {
+              "claim": "zone",
+              "value": "Mainland Demo Region",
+              "quote": "Mainland Demo Region:",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            }
+          ],
+          "components_found": [
+            "GBP_3_80",
+            "standard",
+            "mainland"
+          ],
+          "components_missing": [],
+          "outcome": "Agrees",
+          "reason": null
+        },
+        {
+          "site": "demo_mill_one",
+          "field": "delivery_time",
+          "reference_value": "dispatch within two working days; allow 3-5 working days",
+          "reference_source": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+          "quoted": [
+            {
+              "claim": "dispatch",
+              "value": "within two working days",
+              "quote": "We dispatch your order within two working days",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            },
+            {
+              "claim": "dispatch",
+              "value": "within 2 working days",
+              "quote": "We dispatch all orders within 2 working days",
+              "source_url": "https://demo-mill-one.example/delivery/"
+            },
+            {
+              "claim": "arrival",
+              "value": "3-5 working days",
+              "quote": "please allow 3-5 working days for your parcel to arrive.",
+              "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+            },
+            {
+              "claim": "arrival",
+              "value": "3-5 working days",
+              "quote": "please allow 3-5 working days for your parcel to arrive.",
+              "source_url": "https://demo-mill-one.example/delivery/"
+            }
+          ],
+          "components_found": [
+            "dispatch_2_days",
+            "arrival_3_5"
+          ],
+          "components_missing": [],
+          "outcome": "Agrees",
+          "reason": null
+        },
+        {
+          "site": "demo_mill_two",
+          "field": "product_price",
+          "reference_value": "£14.56",
+          "reference_source": "https://demo-mill-two.example/products/demo-premium-flour-16kg",
+          "quoted": [
+            {
+              "claim": "amount",
+              "value": "£14.56",
+              "quote": "Regular price\n£14.56",
+              "source_url": "https://demo-mill-two.example/products/demo-premium-flour-16kg"
+            },
+            {
+              "claim": "currency",
+              "value": "£",
+              "quote": "£14.56",
+              "source_url": "https://demo-mill-two.example/products/demo-premium-flour-16kg"
+            },
+            {
+              "claim": "variant",
+              "value": "16kg Sack",
+              "quote": "16kg Sack",
+              "source_url": "https://demo-mill-two.example/products/demo-premium-flour-16kg"
+            }
+          ],
+          "components_found": [
+            "GBP_14_56",
+            "matched_16kg",
+            "currency_GBP"
+          ],
+          "components_missing": [],
+          "outcome": "Agrees",
+          "reason": null
+        },
+        {
+          "site": "demo_mill_two",
+          "field": "delivery_charge",
+          "reference_value": "£4.10 standard",
+          "reference_source": "https://demo-mill-two.example/policies/shipping-policy",
+          "quoted": [],
+          "components_found": [],
+          "components_missing": [
+            "GBP_4_10",
+            "standard"
+          ],
+          "outcome": "Missed",
+          "reason": "page_not_read"
+        },
+        {
+          "site": "demo_mill_three",
+          "field": "delivery_time",
+          "reference_value": "dispatch within 3-5 working days",
+          "reference_source": "https://demo-mill-three.example/products/demo-canadian-flour",
+          "quoted": [
+            {
+              "claim": "dispatch",
+              "value": "3-5 working days",
+              "quote": "- Orders leave the mill within 3-5 working days",
+              "source_url": "https://demo-mill-three.example/products/demo-canadian-flour"
+            }
+          ],
+          "components_found": [
+            "dispatch_3_5"
+          ],
+          "components_missing": [],
+          "outcome": "Agrees",
+          "reason": null
+        }
+      ],
+      "totals": {
+        "Agrees": 5,
+        "Partly agrees": 0,
+        "Disagrees": 0,
+        "Missed": 1,
+        "Reference unresolved": 0,
+        "Not in the reference": 0,
+        "Not scored": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+[
+ {
+  "site": "demo_mill_one",
+  "field": "product_price",
+  "components": {
+   "GBP_12_34": "(?<![\\d.])(?:£\\s*)?12\\.34(?!\\d|\\.\\d)",
+   "matched_16kg": "16\\s*kg",
+   "currency_GBP": "£"
+  }
+ },
+ {
+  "site": "demo_mill_one",
+  "field": "delivery_charge",
+  "components": {
+   "GBP_3_80": "(?<![\\d.])(?:£\\s*)?3\\.80(?!\\d|\\.\\d)",
+   "standard": "standard",
+   "mainland": "mainland|Mainland"
+  }
+ },
+ {
+  "site": "demo_mill_one",
+  "field": "delivery_time",
+  "components": {
+   "dispatch_2_days": "two working days|2 working days",
+   "arrival_3_5": "3-5 working days"
+  }
+ },
+ {
+  "site": "demo_mill_two",
+  "field": "product_price",
+  "components": {
+   "GBP_14_56": "(?<![\\d.])(?:£\\s*)?14\\.56(?!\\d|\\.\\d)",
+   "matched_16kg": "16\\s*kg",
+   "currency_GBP": "£"
+  }
+ },
+ {
+  "site": "demo_mill_two",
+  "field": "delivery_charge",
+  "components": {
+   "GBP_4_10": "(?<![\\d.])(?:£\\s*)?4\\.10(?!\\d|\\.\\d)",
+   "standard": "standard"
+  }
+ },
+ {
+  "site": "demo_mill_three",
+  "field": "delivery_time",
+  "components": {
+   "dispatch_3_5": "3-5 working days"
+  }
+ }
+]

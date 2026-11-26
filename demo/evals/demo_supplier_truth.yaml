@@ -1,0 +1,46 @@
+# INVENTED reference for the demo suppliers, written on 25 Nov 2026 as test and demo data. It is not research, not
+# independent human verification, and not a supplier fact; every site, value and quote is invented on reserved
+# .example addresses. Same format as the live connector's reference file.
+domain: supplier
+seeded_at: "2026-11-25"
+question: "Which invented demo mill is cheapest for one 16kg sack of demo flour, delivered? (SYNTHETIC)"
+comparison_note: >
+  Invented test reference only. Single 16kg sack per invented demo mill, standard delivery, mainland zone.
+sites:
+  demo_mill_one:
+    matched_product: "Demo Strong Flour 16kg (invented)"
+    url: "https://demo-mill-one.example/product/demo-strong-flour-16kg/"
+    fields:
+      product_price:
+        value: "£12.34"
+        quote: "Demo Strong Flour 16kg"
+        verified: true
+      delivery_charge:
+        value: "£3.80 standard"
+        quote: "Standard delivery costs £3.80"
+        verified: true
+      delivery_time:
+        value: "dispatch within two working days; allow 3-5 working days"
+        quote: "We dispatch your order within two working days"
+        verified: true
+  demo_mill_two:
+    matched_product: "Demo Premium Flour, 16kg Sack variant (invented)"
+    url: "https://demo-mill-two.example/products/demo-premium-flour-16kg"
+    fields:
+      product_price:
+        value: "£14.56"
+        quote: "Regular price £14.56"
+        verified: true
+      delivery_charge:
+        value: "£4.10 standard"
+        quote: "Standard delivery £4.10 (invented policy page)"
+        quote_source: "https://demo-mill-two.example/policies/shipping-policy"
+        verified: true
+  demo_mill_three:
+    matched_product: "Demo Canadian-style Flour, 16kg variant (invented)"
+    url: "https://demo-mill-three.example/products/demo-canadian-flour"
+    fields:
+      delivery_time:
+        value: "dispatch within 3-5 working days"
+        quote: "- Orders leave the mill within 3-5 working days"
+        verified: true
