@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.DS_Store
+sample-runs/
+# Secrets and local credentials: never commit (ignoring does not untrack files already committed)
+.env
+.env.*
+*.pem
+*.key
+*.p12
+credentials*.json
+service-account*.json
+.netrc
+# Editor clutter and logs
+.idea/
+.vscode/
+*.swp
+*.log
+# Local settings and the live usage ledger: never commit
+scott.local.json
+eval-results/live-ledger.jsonl
