@@ -1,0 +1,797 @@
+{
+  "state": "bounded_result_review_required",
+  "question": "Compare strong white bread flour 16kg delivery conditions",
+  "plan": {
+    "question": "Compare strong white bread flour 16kg delivery conditions",
+    "domain": "supplier",
+    "state": "ready",
+    "gaps": [],
+    "entities": {
+      "pack": "16kg",
+      "product": "strong white bread flour"
+    },
+    "workflow": {
+      "name": "supplier",
+      "question": "Compare strong white bread flour 16kg delivery conditions",
+      "fields": {
+        "product_price": "Price of the matched 16kg strong white bread flour sack, with currency.",
+        "delivery_charge": "Standard delivery charge for an order of one sack, with currency.",
+        "free_delivery_threshold": "Order value above which standard delivery is free, if stated.",
+        "delivery_time": "Stated dispatch or delivery time.",
+        "delivery_geography": "Where the seller delivers (countries/regions), as stated."
+      },
+      "required": [
+        "product_price",
+        "delivery_charge"
+      ],
+      "research_fields": [
+        "product_price",
+        "delivery_charge",
+        "free_delivery_threshold",
+        "delivery_time",
+        "delivery_geography"
+      ],
+      "sites": [
+        {
+          "name": "demo_mill_one",
+          "url": "https://demo-mill-one.sample.example/product",
+          "question": "Compare strong white bread flour 16kg delivery conditions"
+        },
+        {
+          "name": "demo_mill_two",
+          "url": "https://demo-mill-two.sample.example/product",
+          "question": "Compare strong white bread flour 16kg delivery conditions"
+        },
+        {
+          "name": "demo_mill_three",
+          "url": "https://demo-mill-three.sample.example/product",
+          "variant_option": "16kg",
+          "question": "Compare strong white bread flour 16kg delivery conditions"
+        }
+      ],
+      "atomic_fields": {
+        "product_price": {
+          "amount": "Exact price of matched pack",
+          "currency": "Explicit currency identifier",
+          "variant": "Exact pack-size label"
+        },
+        "delivery_charge": {
+          "amount": "Exact delivery charge",
+          "basis": "Per box/parcel/order basis",
+          "vat": "Explicit VAT basis",
+          "zone": "Geography/zone condition",
+          "packing": "Explicit product quantity per box, absent stays unknown",
+          "surcharge": "Explicit surcharge and applicable zone, absent stays unknown",
+          "order_condition": "Order value or quantity condition under which this delivery charge applies, quoted in the same sentence as the charge; absent stays unknown"
+        },
+        "free_delivery_threshold": {
+          "amount": "Exact threshold",
+          "comparison": "Over or inclusive threshold",
+          "zone": "Eligible zones",
+          "weight_limit": "Weight limit if any; absent stays unknown",
+          "discount_condition": "Threshold before or after discounts, if stated",
+          "exceptions": "Exceptions to free shipping"
+        },
+        "delivery_time": {
+          "dispatch": "Dispatch timing",
+          "arrival": "Arrival timing"
+        },
+        "delivery_geography": {
+          "included": "Included area",
+          "excluded": "Excluded area",
+          "surcharge": "Remote-area surcharge conditions"
+        }
+      },
+      "max_pages": 2
+    },
+    "steps": [
+      "Read approved public source",
+      "Extract literal evidence",
+      "Check fields and context",
+      "Recover missing evidence within bounds",
+      "Report facts, conflicts and unknowns"
+    ],
+    "budgets": {
+      "pages_per_site": 2,
+      "store_data_files_per_site": 1,
+      "tool_steps": 24,
+      "generation_calls": 6
+    }
+  },
+  "rows": [
+    {
+      "site": "demo_mill_one",
+      "input": "Compare strong white bread flour 16kg delivery conditions",
+      "atomic_fields": {
+        "product_price": {
+          "status": "literal_components_present",
+          "missing": [],
+          "facts": {
+            "amount": [
+              {
+                "value": "\u00a312.34",
+                "quote": "Demo Strong Flour 16kg sack \u00a312.34",
+                "source_url": "https://demo-mill-one.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "currency": [
+              {
+                "value": "\u00a3",
+                "quote": "Demo Strong Flour 16kg sack \u00a312.34",
+                "source_url": "https://demo-mill-one.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "variant": [
+              {
+                "value": "16kg",
+                "quote": "Demo Strong Flour 16kg sack \u00a312.34",
+                "source_url": "https://demo-mill-one.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {},
+          "offer": {
+            "screen": "offer-v1",
+            "state": "no_structured_offer",
+            "reasons": [
+              "this browser does not capture structured offer records"
+            ],
+            "records": [],
+            "headline": null,
+            "conflicts": [],
+            "availability": "unknown",
+            "read_date": null
+          }
+        },
+        "delivery_charge": {
+          "status": "incomplete",
+          "missing": [
+            "vat",
+            "packing",
+            "surcharge",
+            "order_condition"
+          ],
+          "facts": {
+            "amount": [
+              {
+                "value": "\u00a35.67",
+                "quote": "Standard UK delivery is \u00a35.67 per order",
+                "source_url": "https://demo-mill-one.sample.example/delivery",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "basis": [
+              {
+                "value": "per order",
+                "quote": "Standard UK delivery is \u00a35.67 per order",
+                "source_url": "https://demo-mill-one.sample.example/delivery",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "zone": [
+              {
+                "value": "UK",
+                "quote": "Standard UK delivery is \u00a35.67 per order",
+                "source_url": "https://demo-mill-one.sample.example/delivery",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "free_delivery_threshold": {
+          "status": "incomplete",
+          "missing": [
+            "weight_limit",
+            "discount_condition",
+            "exceptions"
+          ],
+          "facts": {
+            "amount": [
+              {
+                "value": "\u00a360.00",
+                "quote": "Free standard UK delivery on orders over \u00a360.00",
+                "source_url": "https://demo-mill-one.sample.example/delivery",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "comparison": [
+              {
+                "value": "over",
+                "quote": "Free standard UK delivery on orders over \u00a360.00",
+                "source_url": "https://demo-mill-one.sample.example/delivery",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "zone": [
+              {
+                "value": "UK",
+                "quote": "Free standard UK delivery on orders over \u00a360.00",
+                "source_url": "https://demo-mill-one.sample.example/delivery",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_time": {
+          "status": "incomplete",
+          "missing": [
+            "dispatch",
+            "arrival"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_geography": {
+          "status": "incomplete",
+          "missing": [
+            "included",
+            "excluded",
+            "surcharge"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        }
+      },
+      "pages_visited": [
+        "https://demo-mill-one.sample.example/product",
+        "https://demo-mill-one.sample.example/delivery"
+      ],
+      "page_texts": [
+        {
+          "source_url": "https://demo-mill-one.sample.example/product",
+          "text": "DEMO FIXTURE, invented sample text, not a real web page. Demo Strong Flour 16kg sack \u00a312.34. See Delivery information."
+        },
+        {
+          "source_url": "https://demo-mill-one.sample.example/delivery",
+          "text": "DEMO FIXTURE, invented sample text, not a real web page. Standard UK delivery is \u00a35.67 per order. Free standard UK delivery on orders over \u00a360.00."
+        }
+      ],
+      "stop_reason": "page_budget",
+      "errors": [],
+      "rejected_claims": [
+        {
+          "source_url": "https://demo-mill-one.sample.example/product",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        },
+        {
+          "source_url": "https://demo-mill-one.sample.example/delivery",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        }
+      ],
+      "table_context": {},
+      "review_required": true,
+      "store_data": {
+        "files": [],
+        "packs": []
+      }
+    },
+    {
+      "site": "demo_mill_two",
+      "input": "Compare strong white bread flour 16kg delivery conditions",
+      "atomic_fields": {
+        "product_price": {
+          "status": "literal_components_present",
+          "missing": [],
+          "facts": {
+            "amount": [
+              {
+                "value": "\u00a345.67",
+                "quote": "Demo Premium Flour 16kg sack \u00a345.67",
+                "source_url": "https://demo-mill-two.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "currency": [
+              {
+                "value": "\u00a3",
+                "quote": "Demo Premium Flour 16kg sack \u00a345.67",
+                "source_url": "https://demo-mill-two.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "variant": [
+              {
+                "value": "16kg",
+                "quote": "Demo Premium Flour 16kg sack \u00a345.67",
+                "source_url": "https://demo-mill-two.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {},
+          "offer": {
+            "screen": "offer-v1",
+            "state": "no_structured_offer",
+            "reasons": [
+              "this browser does not capture structured offer records"
+            ],
+            "records": [],
+            "headline": null,
+            "conflicts": [],
+            "availability": "unknown",
+            "read_date": null
+          }
+        },
+        "delivery_charge": {
+          "status": "incomplete",
+          "missing": [
+            "amount",
+            "basis",
+            "vat",
+            "zone",
+            "packing",
+            "surcharge",
+            "order_condition"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "free_delivery_threshold": {
+          "status": "incomplete",
+          "missing": [
+            "amount",
+            "comparison",
+            "zone",
+            "weight_limit",
+            "discount_condition",
+            "exceptions"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_time": {
+          "status": "incomplete",
+          "missing": [
+            "dispatch",
+            "arrival"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_geography": {
+          "status": "incomplete",
+          "missing": [
+            "included",
+            "excluded",
+            "surcharge"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        }
+      },
+      "pages_visited": [
+        "https://demo-mill-two.sample.example/product"
+      ],
+      "page_texts": [
+        {
+          "source_url": "https://demo-mill-two.sample.example/product",
+          "text": "DEMO FIXTURE, invented sample text, not a real web page. Demo Premium Flour 16kg sack \u00a345.67. No delivery details on this page."
+        }
+      ],
+      "stop_reason": "no_relevant_source",
+      "errors": [],
+      "rejected_claims": [
+        {
+          "source_url": "https://demo-mill-two.sample.example/product",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        }
+      ],
+      "table_context": {},
+      "review_required": true,
+      "store_data": {
+        "files": [],
+        "packs": []
+      }
+    },
+    {
+      "site": "demo_mill_three",
+      "input": "Compare strong white bread flour 16kg delivery conditions",
+      "atomic_fields": {
+        "product_price": {
+          "status": "possible_numeric_disagreement",
+          "missing": [],
+          "facts": {
+            "amount": [
+              {
+                "value": "\u00a323.45",
+                "quote": "Demo Canadian-style Flour \u00a323.45",
+                "source_url": "https://demo-mill-three.sample.example/product",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "24.56",
+                "quote": "16kg | 24.56 | available=False",
+                "source_url": "https://demo-mill-three.sample.example/product.js",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "currency": [
+              {
+                "value": "\u00a3",
+                "quote": "Demo Canadian-style Flour \u00a323.45",
+                "source_url": "https://demo-mill-three.sample.example/product",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "variant": [
+              {
+                "value": "16kg",
+                "quote": "16kg | 24.56 | available=False",
+                "source_url": "https://demo-mill-three.sample.example/product.js",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {
+            "amount": [
+              {
+                "value": "\u00a323.45",
+                "quote": "Demo Canadian-style Flour \u00a323.45",
+                "source_url": "https://demo-mill-three.sample.example/product",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "24.56",
+                "quote": "16kg | 24.56 | available=False",
+                "source_url": "https://demo-mill-three.sample.example/product.js",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "literal_variations": {
+            "amount": [
+              {
+                "value": "\u00a323.45",
+                "quote": "Demo Canadian-style Flour \u00a323.45",
+                "source_url": "https://demo-mill-three.sample.example/product",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "24.56",
+                "quote": "16kg | 24.56 | available=False",
+                "source_url": "https://demo-mill-three.sample.example/product.js",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "offer": {
+            "screen": "offer-v1",
+            "state": "no_structured_offer",
+            "reasons": [
+              "this browser does not capture structured offer records"
+            ],
+            "records": [],
+            "headline": null,
+            "conflicts": [],
+            "availability": "unknown",
+            "read_date": null
+          }
+        },
+        "delivery_charge": {
+          "status": "incomplete",
+          "missing": [
+            "amount",
+            "basis",
+            "vat",
+            "zone",
+            "packing",
+            "surcharge",
+            "order_condition"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "free_delivery_threshold": {
+          "status": "incomplete",
+          "missing": [
+            "amount",
+            "comparison",
+            "zone",
+            "weight_limit",
+            "discount_condition",
+            "exceptions"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_time": {
+          "status": "incomplete",
+          "missing": [
+            "dispatch",
+            "arrival"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_geography": {
+          "status": "incomplete",
+          "missing": [
+            "included",
+            "excluded",
+            "surcharge"
+          ],
+          "facts": {},
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        }
+      },
+      "pages_visited": [
+        "https://demo-mill-three.sample.example/product",
+        "https://demo-mill-three.sample.example/product.js"
+      ],
+      "page_texts": [
+        {
+          "source_url": "https://demo-mill-three.sample.example/product",
+          "text": "DEMO FIXTURE, invented sample text, not a real web page. Demo Canadian-style Flour \u00a323.45. Choose a pack size."
+        },
+        {
+          "source_url": "https://demo-mill-three.sample.example/product.js",
+          "text": "DEMO FIXTURE, invented sample data, not a real store feed.\n(prices as given by the store divided by 100; this data does not state a currency)\n1kg | 3.21 | available=True\n16kg | 24.56 | available=False"
+        }
+      ],
+      "stop_reason": "possible_numeric_disagreement",
+      "errors": [],
+      "rejected_claims": [
+        {
+          "source_url": "https://demo-mill-three.sample.example/product",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        }
+      ],
+      "table_context": {},
+      "review_required": true,
+      "store_data": {
+        "files": [
+          "https://demo-mill-three.sample.example/product.js"
+        ],
+        "packs": [
+          {
+            "source_url": "https://demo-mill-three.sample.example/product.js",
+            "pack": "16kg",
+            "available": false,
+            "quote": "16kg | 24.56 | available=False"
+          }
+        ]
+      }
+    }
+  ],
+  "trace": [
+    {
+      "step": 1,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 2,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 3,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 4,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 5,
+      "tool": "evidence_link",
+      "why": "Choose same-source missing-field evidence, not page instructions"
+    },
+    {
+      "step": 6,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 7,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 8,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 9,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 10,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "demo_mill_one",
+      "stop_reason": "page_budget"
+    },
+    {
+      "step": 11,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 12,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 13,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 14,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 15,
+      "tool": "evidence_link",
+      "why": "Choose same-source missing-field evidence, not page instructions"
+    },
+    {
+      "step": 16,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "demo_mill_two",
+      "stop_reason": "no_relevant_source"
+    },
+    {
+      "step": 17,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 18,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 19,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 20,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "incomplete",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 21,
+      "tool": "select_variant",
+      "why": "Try explicitly planned visible pack option"
+    },
+    {
+      "step": 22,
+      "tool": "variant_data",
+      "why": "One approved own-site public variant endpoint, read in code"
+    },
+    {
+      "step": 23,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "possible_numeric_disagreement",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "incomplete",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 24,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "demo_mill_three",
+      "stop_reason": "possible_numeric_disagreement"
+    }
+  ],
+  "tool_steps": 16,
+  "generation_calls": 4,
+  "readable": "# Scott planned research\n\nSample data invented for this demo, not evidence read from any website. Literal evidence is not a semantic proof or exhaustive extraction. No cheapest/model-quality verdict.\n\n## demo_mill_one\n\nInput: Compare strong white bread flour 16kg delivery conditions\n\n| Field | Observed claims | Status / unknowns |\n| --- | --- | --- |\n| product_price | amount: \u00a312.34 ([source](https://demo-mill-one.sample.example/product))<br>currency: \u00a3 ([source](https://demo-mill-one.sample.example/product))<br>variant: 16kg ([source](https://demo-mill-one.sample.example/product)) | literal_components_present |\n| delivery_charge | amount: \u00a35.67 ([source](https://demo-mill-one.sample.example/delivery))<br>basis: per order ([source](https://demo-mill-one.sample.example/delivery))<br>zone: UK ([source](https://demo-mill-one.sample.example/delivery)) | incomplete; missing: vat, packing, surcharge, order_condition |\n| free_delivery_threshold | amount: \u00a360.00 ([source](https://demo-mill-one.sample.example/delivery))<br>comparison: over ([source](https://demo-mill-one.sample.example/delivery))<br>zone: UK ([source](https://demo-mill-one.sample.example/delivery)) | incomplete; missing: weight_limit, discount_condition, exceptions |\n| delivery_time | No accepted claims | incomplete; missing: dispatch, arrival |\n| delivery_geography | No accepted claims | incomplete; missing: included, excluded, surcharge |\n\n### Evidence trail\n\n- product_price.amount: \"Demo Strong Flour 16kg sack \u00a312.34\" ([source](https://demo-mill-one.sample.example/product))\n- product_price.currency: \"Demo Strong Flour 16kg sack \u00a312.34\" ([source](https://demo-mill-one.sample.example/product))\n- product_price.variant: \"Demo Strong Flour 16kg sack \u00a312.34\" ([source](https://demo-mill-one.sample.example/product))\n- delivery_charge.amount: \"Standard UK delivery is \u00a35.67 per order\" ([source](https://demo-mill-one.sample.example/delivery))\n- delivery_charge.basis: \"Standard UK delivery is \u00a35.67 per order\" ([source](https://demo-mill-one.sample.example/delivery))\n- delivery_charge.zone: \"Standard UK delivery is \u00a35.67 per order\" ([source](https://demo-mill-one.sample.example/delivery))\n- free_delivery_threshold.amount: \"Free standard UK delivery on orders over \u00a360.00\" ([source](https://demo-mill-one.sample.example/delivery))\n- free_delivery_threshold.comparison: \"Free standard UK delivery on orders over \u00a360.00\" ([source](https://demo-mill-one.sample.example/delivery))\n- free_delivery_threshold.zone: \"Free standard UK delivery on orders over \u00a360.00\" ([source](https://demo-mill-one.sample.example/delivery))\n\nHuman review required. Unknowns are final output for this bounded run, not a promise of further research.\n\n## demo_mill_two\n\nInput: Compare strong white bread flour 16kg delivery conditions\n\n| Field | Observed claims | Status / unknowns |\n| --- | --- | --- |\n| product_price | amount: \u00a345.67 ([source](https://demo-mill-two.sample.example/product))<br>currency: \u00a3 ([source](https://demo-mill-two.sample.example/product))<br>variant: 16kg ([source](https://demo-mill-two.sample.example/product)) | literal_components_present |\n| delivery_charge | No accepted claims | incomplete; missing: amount, basis, vat, zone, packing, surcharge, order_condition |\n| free_delivery_threshold | No accepted claims | incomplete; missing: amount, comparison, zone, weight_limit, discount_condition, exceptions |\n| delivery_time | No accepted claims | incomplete; missing: dispatch, arrival |\n| delivery_geography | No accepted claims | incomplete; missing: included, excluded, surcharge |\n\n### Evidence trail\n\n- product_price.amount: \"Demo Premium Flour 16kg sack \u00a345.67\" ([source](https://demo-mill-two.sample.example/product))\n- product_price.currency: \"Demo Premium Flour 16kg sack \u00a345.67\" ([source](https://demo-mill-two.sample.example/product))\n- product_price.variant: \"Demo Premium Flour 16kg sack \u00a345.67\" ([source](https://demo-mill-two.sample.example/product))\n\nHuman review required. Unknowns are final output for this bounded run, not a promise of further research.\n\n## demo_mill_three\n\nInput: Compare strong white bread flour 16kg delivery conditions\n\n| Field | Observed claims | Status / unknowns |\n| --- | --- | --- |\n| product_price | amount: \u00a323.45 ([source](https://demo-mill-three.sample.example/product))<br>amount: 24.56 ([source](https://demo-mill-three.sample.example/product.js))<br>currency: \u00a3 ([source](https://demo-mill-three.sample.example/product))<br>variant: 16kg ([source](https://demo-mill-three.sample.example/product.js)) | possible_numeric_disagreement; conflicting values retained, no winner selected |\n| delivery_charge | No accepted claims | incomplete; missing: amount, basis, vat, zone, packing, surcharge, order_condition |\n| free_delivery_threshold | No accepted claims | incomplete; missing: amount, comparison, zone, weight_limit, discount_condition, exceptions |\n| delivery_time | No accepted claims | incomplete; missing: dispatch, arrival |\n| delivery_geography | No accepted claims | incomplete; missing: included, excluded, surcharge |\n\n### Evidence trail\n\n- product_price.amount: \"Demo Canadian-style Flour \u00a323.45\" ([source](https://demo-mill-three.sample.example/product))\n- product_price.amount: \"16kg | 24.56 | available=False\" ([source](https://demo-mill-three.sample.example/product.js))\n- product_price.currency: \"Demo Canadian-style Flour \u00a323.45\" ([source](https://demo-mill-three.sample.example/product))\n- product_price.variant: \"16kg | 24.56 | available=False\" ([source](https://demo-mill-three.sample.example/product.js))\n\nHuman review required. Unknowns are final output for this bounded run, not a promise of further research.\n",
+  "demo_fixture_only": true,
+  "network_used": false
+}
