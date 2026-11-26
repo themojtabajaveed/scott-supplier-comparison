@@ -1,0 +1,484 @@
+{
+  "state": "bounded_result_review_required",
+  "question": "Compare Demo Mill One (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+  "plan": {
+    "question": "Compare Demo Mill One (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+    "domain": "supplier",
+    "state": "ready",
+    "gaps": [],
+    "entities": {
+      "pack": "16kg",
+      "product": "strong white bread flour"
+    },
+    "workflow": {
+      "name": "supplier",
+      "question": "Compare Demo Mill One (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+      "fields": {
+        "product_price": "Price of the matched 16kg strong white bread flour sack, with currency.",
+        "delivery_charge": "Standard delivery charge for an order of one sack, with currency.",
+        "free_delivery_threshold": "Order value above which standard delivery is free, if stated.",
+        "delivery_time": "Stated dispatch or delivery time.",
+        "delivery_geography": "Where the seller delivers (countries/regions), as stated."
+      },
+      "required": [
+        "product_price",
+        "delivery_charge"
+      ],
+      "research_fields": [
+        "product_price",
+        "delivery_charge",
+        "free_delivery_threshold",
+        "delivery_time",
+        "delivery_geography"
+      ],
+      "sites": [
+        {
+          "name": "demo_mill_one",
+          "url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+          "delivery_page": "https://demo-mill-one.example/delivery/",
+          "offer_binding": {
+            "product_path": "/product/demo-strong-flour-16kg",
+            "sku": "DM1-16",
+            "pack": "16kg",
+            "single_offer": true
+          }
+        }
+      ],
+      "atomic_fields": {
+        "product_price": {
+          "amount": "Exact price of matched pack",
+          "currency": "Explicit currency identifier",
+          "variant": "Exact pack-size label"
+        },
+        "delivery_charge": {
+          "amount": "Exact delivery charge",
+          "basis": "Per box/parcel/order basis",
+          "vat": "Explicit VAT basis",
+          "zone": "Geography/zone condition",
+          "packing": "Explicit product quantity per box, absent stays unknown",
+          "surcharge": "Explicit surcharge and applicable zone, absent stays unknown",
+          "order_condition": "Order value or quantity condition under which this delivery charge applies, quoted in the same sentence as the charge; absent stays unknown"
+        },
+        "free_delivery_threshold": {
+          "amount": "Exact threshold",
+          "comparison": "Over or inclusive threshold",
+          "zone": "Eligible zones",
+          "weight_limit": "Weight limit if any; absent stays unknown",
+          "discount_condition": "Threshold before or after discounts, if stated",
+          "exceptions": "Exceptions to free shipping"
+        },
+        "delivery_time": {
+          "dispatch": "Dispatch timing",
+          "arrival": "Arrival timing"
+        },
+        "delivery_geography": {
+          "included": "Included area",
+          "excluded": "Excluded area",
+          "surcharge": "Remote-area surcharge conditions"
+        }
+      },
+      "max_pages": 2
+    },
+    "steps": [
+      "Read approved public source",
+      "Extract literal evidence",
+      "Check fields and context",
+      "Recover missing evidence within bounds",
+      "Report facts, conflicts and unknowns"
+    ],
+    "budgets": {
+      "pages_per_site": 2,
+      "store_data_files_per_site": 1,
+      "tool_steps": 24,
+      "generation_calls": 6
+    }
+  },
+  "rows": [
+    {
+      "site": "demo_mill_one",
+      "input": "Compare Demo Mill One (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)",
+      "atomic_fields": {
+        "product_price": {
+          "status": "literal_components_present",
+          "missing": [],
+          "facts": {
+            "amount": [
+              {
+                "value": "£12.34",
+                "quote": "£12.34",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "currency": [
+              {
+                "value": "£",
+                "quote": "£12.34",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "variant": [
+              {
+                "value": "16kg",
+                "quote": "Demo Strong Flour 16kg",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {}
+        },
+        "delivery_charge": {
+          "status": "incomplete",
+          "missing": [
+            "vat",
+            "packing",
+            "surcharge",
+            "order_condition",
+            "basis"
+          ],
+          "facts": {
+            "amount": [
+              {
+                "value": "£3.80",
+                "quote": "Standard delivery costs £3.80",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "£3.80",
+                "quote": "Standard delivery costs £3.80",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "basis": [
+              {
+                "value": "per parcel",
+                "quote": "£6.40 per parcel to:",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "zone": [
+              {
+                "value": "Mainland Demo Region",
+                "quote": "Mainland Demo Region:",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {},
+          "binding_warning": "Rate and charge basis are not linked in the same quoted evidence; do not combine."
+        },
+        "free_delivery_threshold": {
+          "status": "incomplete_literal_variation",
+          "missing": [
+            "weight_limit",
+            "discount_condition",
+            "exceptions"
+          ],
+          "facts": {
+            "amount": [
+              {
+                "value": "£45",
+                "quote": "Orders above £45*",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "£45",
+                "quote": "Free standard mainland delivery on Orders above £45*",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "comparison": [
+              {
+                "value": "above",
+                "quote": "Orders above £45*",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "above",
+                "quote": "Free standard mainland delivery on Orders above £45*",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "zone": [
+              {
+                "value": "standard mainland",
+                "quote": "Free standard mainland delivery on Orders above £45*",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "mainland",
+                "quote": "Free standard mainland delivery on Orders above £45*",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {
+            "zone": [
+              {
+                "value": "standard mainland",
+                "quote": "Free standard mainland delivery on Orders above £45*",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "mainland",
+                "quote": "Free standard mainland delivery on Orders above £45*",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "variation_note": "Different wording/coverage retained; not a confirmed factual contradiction."
+        },
+        "delivery_time": {
+          "status": "incomplete_literal_variation",
+          "missing": [],
+          "facts": {
+            "dispatch": [
+              {
+                "value": "within two working days",
+                "quote": "We dispatch your order within two working days",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "within 2 working days",
+                "quote": "We dispatch all orders within 2 working days",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "arrival": [
+              {
+                "value": "3-5 working days",
+                "quote": "please allow 3-5 working days for your parcel to arrive.",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "3-5 working days",
+                "quote": "please allow 3-5 working days for your parcel to arrive.",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {
+            "dispatch": [
+              {
+                "value": "within two working days",
+                "quote": "We dispatch your order within two working days",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "within 2 working days",
+                "quote": "We dispatch all orders within 2 working days",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "variation_note": "Different numbers quoted for dispatch; human review needed to judge whether the meanings match; not a confirmed contradiction."
+        },
+        "delivery_geography": {
+          "status": "incomplete_literal_variation",
+          "missing": [],
+          "facts": {
+            "included": [
+              {
+                "value": "mainland addresses",
+                "quote": "We deliver only to mainland addresses for now.",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "Mainland Demo Region",
+                "quote": "Mainland Demo Region",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "excluded": [
+              {
+                "value": "Harbour Island\nForces mail addresses.",
+                "quote": "Harbour Island\nForces mail addresses.",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ],
+            "surcharge": [
+              {
+                "value": "£6.40 per parcel",
+                "quote": "£6.40 per parcel\n\nNorth Coast Isles\nWestern Highlands Zone\nFar Valley District",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "review_required": true,
+          "incomplete_components": {},
+          "conflicts": {},
+          "literal_variations": {
+            "included": [
+              {
+                "value": "mainland addresses",
+                "quote": "We deliver only to mainland addresses for now.",
+                "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+                "status": "literal_evidence_only"
+              },
+              {
+                "value": "Mainland Demo Region",
+                "quote": "Mainland Demo Region",
+                "source_url": "https://demo-mill-one.example/delivery/",
+                "status": "literal_evidence_only"
+              }
+            ]
+          },
+          "variation_note": "Different wording/coverage retained; not a confirmed factual contradiction."
+        }
+      },
+      "pages_visited": [
+        "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+        "https://demo-mill-one.example/delivery/"
+      ],
+      "page_texts": [
+        {
+          "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+          "text": "Free standard mainland delivery on Orders above £45*\nDemo Mill One\nBread flour\nDemo Strong Flour 16kg\n£12.34\nDelivery and returns\nStandard delivery costs £3.80\n£6.40 per parcel to:\nNorth Coast Isles\nFar Valley District\nMainland Demo Region:\nWe dispatch your order within two working days\nplease allow 3-5 working days for your parcel to arrive.\nWe deliver only to mainland addresses for now.\nFree standard mainland delivery on Orders above £45*"
+        },
+        {
+          "source_url": "https://demo-mill-one.example/delivery/",
+          "text": "Free standard mainland delivery on Orders above £45*\nDelivery information\nMainland Demo Region\nStandard delivery costs £3.80\nWe dispatch all orders within 2 working days\nplease allow 3-5 working days for your parcel to arrive.\nWe cannot deliver to:\nHarbour Island\nForces mail addresses.\nRegional rates:\n£6.40 per parcel\n\nNorth Coast Isles\nWestern Highlands Zone\nFar Valley District\n£8.20 per parcel to Outer Reef Islands\nFree standard mainland delivery on Orders above £45*"
+        }
+      ],
+      "stop_reason": "page_budget",
+      "errors": [],
+      "rejected_claims": [
+        {
+          "source_url": "https://demo-mill-one.example/product/demo-strong-flour-16kg/",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        },
+        {
+          "source_url": "https://demo-mill-one.example/delivery/",
+          "claims": {
+            "product_price": {},
+            "delivery_charge": {},
+            "free_delivery_threshold": {},
+            "delivery_time": {},
+            "delivery_geography": {}
+          }
+        }
+      ],
+      "table_context": {},
+      "review_required": true
+    }
+  ],
+  "trace": [
+    {
+      "step": 1,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 2,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 3,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 4,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete",
+        "delivery_time": "literal_components_present",
+        "delivery_geography": "incomplete"
+      }
+    },
+    {
+      "step": 5,
+      "tool": "evidence_link",
+      "why": "Choose same-source missing-field evidence, not page instructions"
+    },
+    {
+      "step": 6,
+      "tool": "evidence_link",
+      "why": "No link found on the page; use the configured same-site delivery page"
+    },
+    {
+      "step": 7,
+      "tool": "navigate",
+      "why": "Read approved source for requested entity"
+    },
+    {
+      "step": 8,
+      "tool": "read",
+      "why": "Preserve original text and DOM context"
+    },
+    {
+      "step": 9,
+      "tool": "extract",
+      "why": "Collect only fixed schema claims, never page-directed tools"
+    },
+    {
+      "step": 10,
+      "tool": "checklist",
+      "why": "Missing context/conditions stay unknown; disagreements retained",
+      "fields": {
+        "product_price": "literal_components_present",
+        "delivery_charge": "incomplete",
+        "free_delivery_threshold": "incomplete_literal_variation",
+        "delivery_time": "incomplete_literal_variation",
+        "delivery_geography": "incomplete_literal_variation"
+      }
+    },
+    {
+      "step": 11,
+      "tool": "report",
+      "why": "Bounded result with unknowns and required review",
+      "site": "demo_mill_one",
+      "stop_reason": "page_budget"
+    }
+  ],
+  "tool_steps": 8,
+  "generation_calls": 2,
+  "readable": "# Scout planned research\n\nRead-only evidence snapshot, 27 October 2026. SYNTHETIC test recording of invented pages.\n\n# Scott planned research\n\nRead-only evidence snapshot; the read date is not recorded with this result. Literal evidence is not a semantic proof or exhaustive extraction. No cheapest/model-quality verdict.\n\n## demo_mill_one\n\nInput: Compare Demo Mill One (invented) demo flour 16kg delivery conditions (SYNTHETIC test recording)\n\n| Field | Observed claims | Status / unknowns |\n| --- | --- | --- |\n| product_price | amount: £12.34 ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>currency: £ ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>variant: 16kg ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/)) | literal_components_present |\n| delivery_charge | amount: £3.80 ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>amount: £3.80 ([source](https://demo-mill-one.example/delivery/))<br>basis: per parcel ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>zone: Mainland Demo Region ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/)) | incomplete; missing: vat, packing, surcharge, order_condition, basis; Rate and charge basis are not linked in the same quoted evidence; do not combine. |\n| free_delivery_threshold | amount: £45 ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>amount: £45 ([source](https://demo-mill-one.example/delivery/))<br>comparison: above ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>comparison: above ([source](https://demo-mill-one.example/delivery/))<br>zone: standard mainland ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>zone: mainland ([source](https://demo-mill-one.example/delivery/)) | incomplete_literal_variation; missing: weight_limit, discount_condition, exceptions; Different wording/coverage retained; not a confirmed factual contradiction. |\n| delivery_time | dispatch: within two working days ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>dispatch: within 2 working days ([source](https://demo-mill-one.example/delivery/))<br>arrival: 3-5 working days ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>arrival: 3-5 working days ([source](https://demo-mill-one.example/delivery/)) | incomplete_literal_variation; Different numbers quoted for dispatch; human review needed to judge whether the meanings match; not a confirmed contradiction. |\n| delivery_geography | included: mainland addresses ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))<br>included: Mainland Demo Region ([source](https://demo-mill-one.example/delivery/))<br>excluded: Harbour Island Forces mail addresses. ([source](https://demo-mill-one.example/delivery/))<br>surcharge: £6.40 per parcel ([source](https://demo-mill-one.example/delivery/)) | incomplete_literal_variation; Different wording/coverage retained; not a confirmed factual contradiction. |\n\n### Evidence trail\n\n- product_price.amount: \"£12.34\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- product_price.currency: \"£12.34\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- product_price.variant: \"Demo Strong Flour 16kg\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- delivery_charge.amount: \"Standard delivery costs £3.80\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- delivery_charge.amount: \"Standard delivery costs £3.80\" ([source](https://demo-mill-one.example/delivery/))\n- delivery_charge.basis: \"£6.40 per parcel to:\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- delivery_charge.zone: \"Mainland Demo Region:\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- free_delivery_threshold.amount: \"Orders above £45*\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- free_delivery_threshold.amount: \"Free standard mainland delivery on Orders above £45*\" ([source](https://demo-mill-one.example/delivery/))\n- free_delivery_threshold.comparison: \"Orders above £45*\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- free_delivery_threshold.comparison: \"Free standard mainland delivery on Orders above £45*\" ([source](https://demo-mill-one.example/delivery/))\n- free_delivery_threshold.zone: \"Free standard mainland delivery on Orders above £45*\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- free_delivery_threshold.zone: \"Free standard mainland delivery on Orders above £45*\" ([source](https://demo-mill-one.example/delivery/))\n- delivery_time.dispatch: \"We dispatch your order within two working days\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- delivery_time.dispatch: \"We dispatch all orders within 2 working days\" ([source](https://demo-mill-one.example/delivery/))\n- delivery_time.arrival: \"please allow 3-5 working days for your parcel to arrive.\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- delivery_time.arrival: \"please allow 3-5 working days for your parcel to arrive.\" ([source](https://demo-mill-one.example/delivery/))\n- delivery_geography.included: \"We deliver only to mainland addresses for now.\" ([source](https://demo-mill-one.example/product/demo-strong-flour-16kg/))\n- delivery_geography.included: \"Mainland Demo Region\" ([source](https://demo-mill-one.example/delivery/))\n- delivery_geography.excluded: \"Harbour Island\nForces mail addresses.\" ([source](https://demo-mill-one.example/delivery/))\n- delivery_geography.surcharge: \"£6.40 per parcel\n\nNorth Coast Isles\nWestern Highlands Zone\nFar Valley District\" ([source](https://demo-mill-one.example/delivery/))\n\nHuman review required. Unknowns are final output for this bounded run, not a promise of further research.\n",
+  "note": "INVENTED later run for the UI later-run note: a second engine recording of the same invented pages (scout/demo_mode.py); not a live run and not a supplier fact."
+}
